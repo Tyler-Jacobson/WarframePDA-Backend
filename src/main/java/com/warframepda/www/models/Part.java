@@ -14,10 +14,8 @@ public class Part {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long partid;
 
+    private String partname;
 
-    @OneToMany(mappedBy = "part", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties(value = "part", allowSetters = true)
-    private List<Order> orders = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "itemid",
@@ -25,19 +23,17 @@ public class Part {
     @JsonIgnoreProperties(value = "parts", allowSetters = true)
     private Item item;
 
+    @OneToMany(mappedBy = "part", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties(value = "part", allowSetters = true)
+    private List<Order> orders = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "partdetailid",
-            nullable = false)
-    @JsonIgnoreProperties(value = "parts", allowSetters = true)
-    private PartDetail partdetail;
 
     public Part() {
     }
 
-    public Part(Item item, PartDetail partdetail) {
+    public Part(String partname, Item item) {
+        this.partname = partname;
         this.item = item;
-        this.partdetail = partdetail;
     }
 
     public long getPartid() {
@@ -62,5 +58,13 @@ public class Part {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public String getPartname() {
+        return partname;
+    }
+
+    public void setPartname(String partname) {
+        this.partname = partname;
     }
 }

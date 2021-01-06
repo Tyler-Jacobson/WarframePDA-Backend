@@ -22,20 +22,18 @@ public class Order {
     @JsonIgnoreProperties(value = "orders", allowSetters = true)
     private Part part;
 
-    @ManyToMany()
-    @JoinTable(name = "orderssellers",
-            joinColumns = @JoinColumn(name = "orderid"),
-            inverseJoinColumns = @JoinColumn(name = "sellerid"))
+    @ManyToOne
+    @JoinColumn(name = "sellerid", nullable = false)
     @JsonIgnoreProperties(value = "orders", allowSetters = true)
-    Set<Seller> sellers = new HashSet<>();
-
+    private Seller seller;
 
     public Order() {
     }
 
-    public Order(int price, Part part) {
+    public Order(int price, Part part, Seller seller) {
         this.price = price;
         this.part = part;
+        this.seller = seller;
     }
 
     public long getOrderid() {
@@ -62,11 +60,11 @@ public class Order {
         this.part = part;
     }
 
-    public Set<Seller> getSellers() {
-        return sellers;
+    public Seller getSeller() {
+        return seller;
     }
 
-    public void setSellers(Set<Seller> sellers) {
-        this.sellers = sellers;
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 }
