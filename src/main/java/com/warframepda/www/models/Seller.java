@@ -3,8 +3,8 @@ package com.warframepda.www.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "sellers")
@@ -16,9 +16,9 @@ public class Seller {
 
     private String sellername;
 
-    @ManyToMany(mappedBy = "sellers")
-    @JsonIgnoreProperties(value = "sellers", allowSetters = true)
-    private Set<Order> orders = new HashSet<>();
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties(value = "seller", allowSetters = true)
+    private List<Order> orders = new ArrayList<>();
 
     public Seller() {
     }
@@ -39,11 +39,11 @@ public class Seller {
         this.sellername = sellername;
     }
 
-    public Set<Order> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(Set<Order> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 }
