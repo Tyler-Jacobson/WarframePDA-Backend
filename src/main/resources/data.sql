@@ -18,30 +18,35 @@ INSERT INTO items (itemid, itemname, imageurl)
            (2, 'Saryn', 'www.url.com'),
            (3, 'Nezha', 'www.url.com');
 
-INSERT INTO parts (partid, partname, itemid)
-    VALUES (4, 'Set', 1),
-           (5, 'Chassis', 1),
-           (6, 'Neuroptics', 1),
-           (7, 'Systems', 1),
-           (8, 'Blueprint', 1),
-           (9, 'Set', 2),
-           (10, 'Chassis', 2),
-           (11, 'Neuroptics', 2),
-           (12, 'Systems', 2),
-           (13, 'Blueprint', 3),
-           (14, 'Set', 3),
-           (15, 'Chassis', 3),
-           (16, 'Neuroptics', 3),
-           (17, 'Systems', 3),
-           (18, 'Blueprint', 3);
+INSERT INTO partdetails (partdetailid, partname)
+    VALUES (35, 'Systems'),
+           (36, 'Chassis'),
+           (37, 'Blueprint'),
+           (38, 'Neuroptics'),
+           (39, 'Set');
+
+INSERT INTO parts (partid, itemid, partdetailid)
+    VALUES (4, 1, 35),
+           (5, 1, 36),
+           (6, 1, 37),
+           (7, 1, 38),
+           (8, 1, 39),
+           (9, 2, 36),
+           (10, 2, 37),
+           (11, 2, 38),
+           (12, 2, 39),
+           (13, 3, 37),
+           (14, 3, 38),
+           (15, 3, 35),
+           (16, 3, 39);
 
 INSERT INTO orders (orderid, price, partid)
     VALUES (20, 12, 4),
            (21, 16, 5),
            (22, 19, 4),
            (23, 13, 10),
-           (24, 122, 17),
-           (25, 20, 18);
+           (24, 122, 16),
+           (25, 20, 16);
 
 INSERT INTO sellers (sellerid, sellername)
     VALUES (30, 'Timmy'),
@@ -57,4 +62,4 @@ INSERT INTO orderssellers
            (25, 32);
 
 
-alter sequence hibernate_sequence restart with 50;
+alter sequence hibernate_sequence restart with 70;
