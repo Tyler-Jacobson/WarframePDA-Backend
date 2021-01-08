@@ -45,5 +45,4 @@ INSERT INTO orders (orderid, price, partid, sellerid)
 
 
 
-
 alter sequence hibernate_sequence restart with 70;
