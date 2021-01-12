@@ -14,6 +14,7 @@ public class Seller {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long sellerid;
 
+    @Column(nullable = false)
     private String sellername;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)

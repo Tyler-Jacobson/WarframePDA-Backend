@@ -3,13 +3,12 @@ package com.warframepda.www.controllers;
 import com.warframepda.www.models.Item;
 import com.warframepda.www.services.ItemServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,4 +35,17 @@ public class ItemController {
         Item i = itemServices.findItemByName(name);
         return new ResponseEntity<>(i, HttpStatus.OK);
     }
+
+    // Non-read request mappings
+
+    @PostMapping(value = "/item", produces = "application/json")
+    public ResponseEntity<?> addNewItem(@Valid @RequestBody Item newItem) {
+
+        newItem.setItemid(0);
+        newItem = itemServices.save(newItem);
+
+        return new ResponseEntity<>(newItem, HttpStatus.OK);
+    }
+
+
 }
