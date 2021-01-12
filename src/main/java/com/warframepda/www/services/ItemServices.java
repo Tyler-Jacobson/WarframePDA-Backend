@@ -11,4 +11,6 @@ public interface ItemServices {
     Item findItemById(long id);
 
     Item findItemByName(String name);
+
+    Item save(Item item);
 }
