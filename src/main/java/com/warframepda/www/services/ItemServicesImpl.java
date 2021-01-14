@@ -57,74 +57,86 @@ public class ItemServicesImpl implements ItemServices {
         Item newItem = new Item();
 
         try {
-            // This attempts to find the name of the incoming item in our database
+            // This attempts to find the name of the incoming item in the database
             Item existingItem = itemrepos.findByItemnameIgnoringCase(item.getItemname());
 
-            // This attempts to set the name and ID on our new item.
-            // If the either is null (the item is not in our database) this will throw an error, sending us to the catch block
+            // This attempts to set the name and ID on the new item.
+            // If the either is null (the item is not in the database) this will throw an error, sending us to the catch block
             newItem.setItemid(existingItem.getItemid());
             newItem.setItemname(existingItem.getItemname());
         }
         catch (Exception e) {
-            // Since the item does not exist in our database, we simply create it
+            // Since the item does not exist in the database, we simply create it
             newItem.setItemname(item.getItemname());
         }
 
         // Setting the image
         newItem.setImageurl(item.getImageurl());
 
-        // A new list of parts is created, much of the data related to parts is going to be overwritten,
-        //
+        // A new list of parts is created, which is going to receive all of the new parts data
         List<Part> newPartsList = new ArrayList<>();
 
+        // p is the individual part data received from the incoming request
         for (Part p : item.getParts()) {
 
+            // New part is created
             Part newPart = new Part();
 
+            // Newly created part is assigned to the newly created item above
             newPart.setItem(newItem);
 
+            // the name is received from the incoming request
             newPart.setPartname(p.getPartname());
 
+            // o is each individual order on each part received from the incoming request
             for (Order o : p.getOrders()) {
 
+                // New order is created
                 Order newOrder = new Order();
 
-                // The seller which has been recieved from the incoming network request
-                Seller recievedSeller = o.getSeller();
+                // The seller which has been received from the incoming network request
+                Seller receivedSeller = o.getSeller();
 
+                // This order is assigned to the newly created part above
                 newOrder.setPart(newPart);
 
+                // Price is received from incoming request
                 newOrder.setPrice(o.getPrice());
 
+                // New seller is created (this can be assigned to an existing seller within the database)
                 Seller newSeller = new Seller();
 
                 try {
-                    System.out.println("Seller Try Reached");
-                    Seller existingSeller = sellerrepos.findBySellernameIgnoringCase(recievedSeller.getSellername());
+                    // This attempts to find the name of the incoming seller in the database
+                    Seller existingSeller = sellerrepos.findBySellernameIgnoringCase(receivedSeller.getSellername());
 
+                    // This attempts to set the name and ID on the new seller.
+                    // If the either is null (the item is not in the database) this will throw an error, sending us to the catch block
                     newSeller.setSellerid(existingSeller.getSellerid());
                     newSeller.setSellername(existingSeller.getSellername());
 
-                    System.out.println("Seller Try Completed");
                 }
                 catch (Exception e) {
-                    System.out.println("Seller Catch Reached");
-                    newSeller.setSellername(recievedSeller.getSellername());
+                    // Since the seller does not exist in the database, we create and save it for immediate use
+                    newSeller.setSellername(receivedSeller.getSellername());
                     sellerrepos.save(newSeller);
-                    System.out.println("Seller Catch Completed");
                 }
+                // The seller is saved to the order
                 newOrder.setSeller(newSeller);
 
+                // Adds the newly created order to the new part
                 newPart.getOrders().add(newOrder);
             }
 
-
+            // Adds the newly created part to new parts list
             newPartsList.add(newPart);
         }
 
+        // The new list of parts is set to the item
         newItem.setParts(newPartsList);
 
-
+        // The item is saved to the repository
         return itemrepos.save(newItem);
     }
+
 }

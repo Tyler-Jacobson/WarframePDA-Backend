@@ -7,8 +7,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,13 +26,13 @@ public class ItemController {
         return new ResponseEntity<>(myItems, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{itemid}", produces = "application/json")
+    @GetMapping(value = "/item/{itemid}", produces = "application/json")
     public ResponseEntity<?> getItemById(@PathVariable Long itemid) {
         Item i = itemServices.findItemById(itemid);
         return new ResponseEntity<>(i, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/name/{name}", produces = "application/json")
+    @GetMapping(value = "/item/name/{name}", produces = "application/json")
     public ResponseEntity<?> findItemByName(@PathVariable String name) {
         Item i = itemServices.findItemByName(name);
         return new ResponseEntity<>(i, HttpStatus.OK);
@@ -38,14 +40,20 @@ public class ItemController {
 
     // Non-read request mappings
 
+    // The primary request that will be used by the application. This functions as both a create and update function,
+    // and does not use any incoming ids to create or update data, as the script sending the data is designed to be id-free
     @PostMapping(value = "/item", produces = "application/json")
     public ResponseEntity<?> addNewItem(@Valid @RequestBody Item newItem) {
 
         newItem.setItemid(0);
         newItem = itemServices.save(newItem);
 
-        return new ResponseEntity<>(newItem, HttpStatus.OK);
-    }
+        HttpHeaders responseHeaders = new HttpHeaders();
 
+        URI newItemURI = ServletUriComponentsBuilder.fromCurrentRequest().path("/{itemid}").buildAndExpand(newItem.getItemid()).toUri();
+        responseHeaders.setLocation(newItemURI);
+
+        return new ResponseEntity<>(null, responseHeaders, HttpStatus.OK);
+    }
 
 }
