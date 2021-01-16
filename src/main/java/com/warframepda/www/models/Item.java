@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "items")
-public class Item {
+public class Item extends Auditable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,6 +17,7 @@ public class Item {
     @Column(nullable = false)
     private String itemname;
 
+    @Column(nullable = false)
     private String imageurl;
 
     @OneToMany(mappedBy = "item",
