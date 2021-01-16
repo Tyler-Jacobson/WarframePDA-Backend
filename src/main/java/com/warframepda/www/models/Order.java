@@ -8,13 +8,13 @@ import java.util.Set;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     private long orderid;
 
+    @Column(nullable = false)
     private int price;
 
     @ManyToOne

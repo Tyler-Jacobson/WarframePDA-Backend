@@ -8,12 +8,13 @@ import java.util.List;
 
 @Entity
 @Table(name = "parts")
-public class Part {
+public class Part extends Auditable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long partid;
 
+    @Column(nullable = false)
     private String partname;
 
 
