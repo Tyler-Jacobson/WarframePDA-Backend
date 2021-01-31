@@ -23,7 +23,7 @@ public class ItemController {
     @GetMapping(value = "/all", produces = "application/json")
     public ResponseEntity<?> listAllItems() {
         List<Item> myItems = itemServices.findAllItems();
-        System.out.println(System.getenv("TickleTom"));
+        System.out.println(System.getenv("getenv example in ItemController"));
         return new ResponseEntity<>(myItems, HttpStatus.OK);
     }
 
