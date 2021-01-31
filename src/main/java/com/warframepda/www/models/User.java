@@ -75,7 +75,6 @@ public class User extends Auditable {
 
     @JsonIgnore
     public List<SimpleGrantedAuthority> getAuthority() {
-        System.out.println("Reaches getAuthority in usermodel");
         List<SimpleGrantedAuthority> rtnList = new ArrayList<>();
 
         String myRole = "ROLE_" + getUserrole().toUpperCase();

@@ -13,7 +13,9 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 
 @Configuration
 @EnableAuthorizationServer
-public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+public class AuthorizationServerConfig
+    extends AuthorizationServerConfigurerAdapter
+{
 
     static final String CLIENT_ID = System.getenv("OAUTHCLIENTID");
     static final String CLIENT_SECRET = System.getenv("OAUTHCLIENTSECRET");
@@ -49,11 +51,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 
         endpoints.tokenStore(tokenStore)
                 .authenticationManager(authenticationManager);
-        endpoints.pathMapping("/oauth/token", "login");
+        endpoints.pathMapping("/oauth/token", "/login");
     }
 
 }
