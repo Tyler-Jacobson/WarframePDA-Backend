@@ -27,7 +27,11 @@ public class AuthorizationServerConfig
     static final String SCOPE_WRITE = "write";
     static final String TRUST = "trust";
 
+
+
+
     static final int ACCESS_TOKEN_VALIDITY_SECONDS = -1;
+
 
 
     @Autowired
