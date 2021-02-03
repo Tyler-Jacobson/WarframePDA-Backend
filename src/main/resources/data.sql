@@ -43,6 +43,9 @@ INSERT INTO orders (orderid, price, partid, sellerid)
            (24, 122, 16, 32),
            (25, 20, 16, 30);
 
+INSERT INTO users (userid, username, password, userrole)
+    VALUES (50, 'admintest', 'password', 'ADMIN');
+
 
 
 alter sequence hibernate_sequence restart with 70;
