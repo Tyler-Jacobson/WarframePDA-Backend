@@ -5,6 +5,7 @@ import com.warframepda.www.models.Order;
 import com.warframepda.www.models.Part;
 import com.warframepda.www.models.Seller;
 import com.warframepda.www.repositories.ItemRepository;
+import com.warframepda.www.repositories.PartRepository;
 import com.warframepda.www.repositories.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class ItemServicesImpl implements ItemServices {
 
     @Autowired
     private SellerRepository sellerrepos;
+
+    @Autowired
+    private PartRepository partrepos;
 
     @Override
     public List<Item> findAllItems() {
@@ -55,6 +59,7 @@ public class ItemServicesImpl implements ItemServices {
         // A new item is created, which will have all of the desired incoming data appended to it
         // This prevents the accidental addition of something such as an ID in the data, which should not be recieved from incoming requests at all
         Item newItem = new Item();
+        
 
         try {
             // This attempts to find the name of the incoming item in the database
