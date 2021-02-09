@@ -23,8 +23,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/", "h2-console/**", "/items/all", "/login").permitAll()
-                .antMatchers("/items/**", "/orders/**", "/sellers/**").hasAnyRole("ADMIN")
+                .antMatchers("/", "h2-console/**", "/items/**", "/login").permitAll()
+                .antMatchers(HttpMethod.POST,
+                        "/items/**").hasAnyRole("ADMIN")
+                .antMatchers("/orders/**", "/sellers/**").hasAnyRole("ADMIN")
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(new OAuth2AccessDeniedHandler());
