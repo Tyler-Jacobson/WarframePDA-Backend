@@ -24,6 +24,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/", "h2-console/**", "/items/all", "/login").permitAll()
+//                .antMatchers(HttpMethod.POST,
+//                        "/items/item").hasAnyRole("ADMIN")
                 .antMatchers("/items/**", "/orders/**", "/sellers/**").hasAnyRole("ADMIN")
                 .and()
                 .exceptionHandling()
