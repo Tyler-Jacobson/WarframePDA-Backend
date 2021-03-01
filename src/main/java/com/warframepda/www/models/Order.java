@@ -17,23 +17,23 @@ public class Order extends Auditable {
     @Column(nullable = false)
     private int price;
 
+    @Column(nullable = false)
+    private String seller;
+
     @ManyToOne
     @JoinColumn(name = "partid", nullable = false)
     @JsonIgnoreProperties(value = "orders", allowSetters = true)
     private Part part;
 
-    @ManyToOne
-    @JoinColumn(name = "sellerid", nullable = false)
-    @JsonIgnoreProperties(value = "orders", allowSetters = true)
-    private Seller seller;
+
 
     public Order() {
     }
 
-    public Order(int price, Part part, Seller seller) {
+    public Order(int price, String seller, Part part) {
         this.price = price;
-        this.part = part;
         this.seller = seller;
+        this.part = part;
     }
 
     public long getOrderid() {
@@ -52,6 +52,14 @@ public class Order extends Auditable {
         this.price = price;
     }
 
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
     public Part getPart() {
         return part;
     }
@@ -60,11 +68,4 @@ public class Order extends Auditable {
         this.part = part;
     }
 
-    public Seller getSeller() {
-        return seller;
-    }
-
-    public void setSeller(Seller seller) {
-        this.seller = seller;
-    }
 }

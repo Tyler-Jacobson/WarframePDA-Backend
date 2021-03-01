@@ -3,10 +3,8 @@ package com.warframepda.www.services;
 import com.warframepda.www.models.Item;
 import com.warframepda.www.models.Order;
 import com.warframepda.www.models.Part;
-import com.warframepda.www.models.Seller;
 import com.warframepda.www.repositories.ItemRepository;
 import com.warframepda.www.repositories.PartRepository;
-import com.warframepda.www.repositories.SellerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,9 +19,6 @@ public class ItemServicesImpl implements ItemServices {
 
     @Autowired
     private ItemRepository itemrepos;
-
-    @Autowired
-    private SellerRepository sellerrepos;
 
     @Autowired
     private PartRepository partrepos;
@@ -99,35 +94,14 @@ public class ItemServicesImpl implements ItemServices {
                 // New order is created
                 Order newOrder = new Order();
 
-                // The seller which has been received from the incoming network request
-                Seller receivedSeller = o.getSeller();
-
                 // This order is assigned to the newly created part above
                 newOrder.setPart(newPart);
 
                 // Price is received from incoming request
                 newOrder.setPrice(o.getPrice());
 
-                // New seller is created (this can be assigned to an existing seller within the database)
-                Seller newSeller = new Seller();
-
-                try {
-                    // This attempts to find the name of the incoming seller in the database
-                    Seller existingSeller = sellerrepos.findBySellernameIgnoringCase(receivedSeller.getSellername());
-
-                    // This attempts to set the name and ID on the new seller.
-                    // If the either is null (the item is not in the database) this will throw an error, sending us to the catch block
-                    newSeller.setSellerid(existingSeller.getSellerid());
-                    newSeller.setSellername(existingSeller.getSellername());
-
-                }
-                catch (Exception e) {
-                    // Since the seller does not exist in the database, we create and save it for immediate use
-                    newSeller.setSellername(receivedSeller.getSellername());
-                    sellerrepos.save(newSeller);
-                }
-                // The seller is saved to the order
-                newOrder.setSeller(newSeller);
+                // Seller is received from incoming request
+                newOrder.setSeller(o.getSeller());
 
                 // Adds the newly created order to the new part
                 newPart.getOrders().add(newOrder);
